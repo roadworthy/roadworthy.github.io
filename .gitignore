@@ -1,0 +1,13 @@
+.*
+node_modules
+bin
+build
+npm-debug.log
+uploads
+dump.rdb
+*.json
+!.gitignore
+!package-lock.json
+!package.json
+*.pem
+*.key

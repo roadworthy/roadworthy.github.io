@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="&copy; Roadworthy">
+
+    <title>Roadworthy | Beta</title>
+
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="vendor/simple-line-icons/css/simple-line-icons.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,500,600" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:300,400,500,600,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700" rel="stylesheet">
+
+    <link href="css/new-age.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+    <div class="container" style="text-align: center">
+        <i class="fas fa-car" style="font-size:24px; margin-right:5px"></i>
+        <a class="navbar-brand" href="/">R<span class="shrink">oadworthy</span><sub style="font-size: 12px; color:#999; font-weight:300">{beta}</sub></a>
+    </div>
+
+    <div class="container container-small">
+        <p>Welcome to the Roadworthy beta!</p>
+        <p>Upload a short video (~10 sec.) of the sound your vehicle is making, give us a little info, and we'll do our best to help you figure out what's wrong!</p>
+    </div>
+    
+    <div id="rw-form" class="container container-small">
+        <form action="#" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>Where's your vehicle's noise coming from?<span class="optional">* Leave blank if you're unsure</span></label>
+                <div id="vehicle-picker">
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-2">
+                            <input type="checkbox" id="loc_rear_left" name="loc_rear_left" value="rear_left">
+                            <label for="loc_rear_left" title="Rear left wheel well"></label>
+                            <input type="checkbox" id="loc_rear_right" name="loc_rear_right" value="rear_right">
+                            <label for="loc_rear_right" title="Rear right wheel well"></label>
+                        </div>
+                        <div class="col-2"></div>
+                        <div class="col-2">
+                            <input type="checkbox" id="loc_front_left" name="loc_front_left" value="fr_left">
+                            <label for="loc_front_left" title="Front left wheel well"></label>
+                            <input type="checkbox" id="loc_front_right" name="loc_front_right" value="fr_right">
+                            <label for="loc_front_right" title="Rear right wheel well"></label>
+                        </div>
+                        <div class="col-2" style="margin-top:50px; margin-bottom:50px;">
+                           <input type="checkbox" id="loc_engine" name="loc_engine" value="engine">
+                            <label for="loc_engine" title="Engine compartment"></label>
+                        </div>
+                    </div>
+                    <div class="centerline">
+                        <input type="checkbox" id="loc_centerline" name="loc_centerline" value="center">
+                        <label for="loc_centerline" title="Vehicle centerline (underneath)"></label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>When does your vehicle make the noise?<span class="optional">* Select all that apply</span></label>
+                <div id="timing-context" style="text-align: center">
+                    <div>
+                        <input type="checkbox" value="starting" name="during_startup" id="during_startup"><label for="during_startup">When Starting</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="during_idle" name="during_idle" value="idling"><label for="during_idle">When Idling</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" value="driving" name="during_driving" id="during_driving"><label for="during_driving">When Driving</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" value="turning" name="during_turning" id="during_turning"><label for="during_turning">When Turning</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="video-input">Upload a brief video of your vehicle making the sound:<span class="optional">* ~5-10 seconds</span></label>
+                <input type="file" name="vid" required />
+            </div>
+            <div class="form-group">
+                <label for="extra_info">Any extra info about the issue?<span class="optional">* Optional</span></label>
+                <textarea name="extra_info" id="extra_info"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="email">Enter your email address:<span class="optional">* We'll send your diagnostic here!</span></label>
+                <input type="email" name="email" placeholder="example@getroadworthy.com" required />
+            </div>
+            <div class="form-group" style="text-align:center">
+                <input type="submit" style="max-width:400px; margin:0 auto" class="btn btn-primary" value="Diagnose my Issue!" />
+            </div>
+        </form>
+    </div>
+    
+    <div id="loading-modal" class="result-modal">
+        <div class="spinner">
+            <img src="img/loading.gif" alt="processing..." />
+            <h2>Uploading</h2>
+            <div class="uploading">
+                <div class="progress-bar"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="success-modal" class="result-modal">
+        <div class="words">
+            <p>Success! We've received the information you provided - our servers should process and send out your diagnosis within 24 hours.</p>
+            <p>Thanks for being a part of the Roadworthy Beta!</p>
+            <center><div class="btn btn-light" onclick="closeAndReset()">Close</div></center>
+        </div>
+    </div>
+    
+    <div id="failure-modal" class="result-modal">
+        <div class="words">
+            <p>Oh no, something went wrong while transmitting the information you provided!</p>
+            <p>if this problem persists please email: <a href="mailto:support@getroadworthy.com">support@getroadworthy.com</a></p>
+            <p>Thanks for bearing with us while we're still in Beta!</p>
+            <center><div class="btn btn-light" onclick="closeModal()">Close</div></center>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; Roadworthy 2018. All Rights Reserved.</p>
+            <p><a href="mailto:hello@getroadworthy.com">hello@getroadworthy.com</a></p>
+            <ul class="list-inline">
+                <li class="list-inline-item">
+                    <a href="/privacy.html">Privacy</a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="/terms.html">Terms</a>
+                </li>
+<!--
+                <li class="list-inline-item">
+                    <a href="#">FAQ</a>
+                </li>
+-->
+            </ul>
+        </div>
+    </footer>
+
+    <script src="js/jquery-2.2.4.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+
+</html>
